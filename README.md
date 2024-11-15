@@ -1,6 +1,8 @@
 # ProsemirrorModel
 
-**TODO: Add description**
+An Elixir implementation of ProseMirror's [document model](https://prosemirror.net/docs/ref/#model) for Ecto.
+Uses [`:polymorphic_embed`](https://github.com/mathieuprog/polymorphic_embed) to represent documents.
+Inspired by [`:ex_prosemirror`](https://github.com/Omerlo-Technologies/ex_prosemirror).
 
 ## Installation
 
