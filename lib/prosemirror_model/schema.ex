@@ -1,6 +1,6 @@
 defmodule ProsemirrorModel.Schema do
   @moduledoc ~S"""
-  Module helper for Ecto.Schema.
+  Module helper for `Ecto.Schema`.
   """
 
   @doc ~S"""
@@ -15,7 +15,7 @@ defmodule ProsemirrorModel.Schema do
     quote do
       use Ecto.Schema
       @primary_key false
-      import ProsemirrorModel.Schema, only: [prosemirror_field: 2]
+      import ProsemirrorModel.Schema
     end
   end
 

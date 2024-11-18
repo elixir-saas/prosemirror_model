@@ -3,16 +3,9 @@ defmodule ProsemirrorModel do
   Documentation for `ProsemirrorModel`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> ProsemirrorModel.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  defmacro __using__(_opts) do
+    quote do
+      import ProsemirrorModel.ModifierHelper
+    end
   end
 end

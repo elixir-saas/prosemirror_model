@@ -1,6 +1,6 @@
 defmodule ProsemirrorModel.Block.HardBreak do
   @moduledoc """
-  Representation of a hard break tag (`<br>`).
+  Represents a hard break (`<br>`).
   """
   use ProsemirrorModel.Schema
   use ProsemirrorModel.Encoder.JSON, type: :hard_break
@@ -16,7 +16,7 @@ defmodule ProsemirrorModel.Block.HardBreak do
 
     def encode(_struct, _opts) do
       assigns = %{}
-      ~H"<br />"
+      ProsemirrorModel.EncoderHelpers.render(~H"<br />")
     end
   end
 end
