@@ -32,8 +32,11 @@ defmodule ProsemirrorModel.Block.Heading do
   def changeset(struct, attrs \\ %{}, opts \\ []) do
     struct
     |> Ecto.Changeset.cast(attrs, [])
-    |> Ecto.Changeset.cast_embed(:attrs, required: true)
-    |> cast_prosemirror_content(with: [text: {Text, :changeset, [opts]}])
+    |> Ecto.Changeset.cast_embed(:attrs,
+      with: &__MODULE__.Attrs.changeset(&1, &2, opts),
+      required: true
+    )
+    |> cast_prosemirror_content(with: [text: {Block.Text, :changeset, [opts]}])
   end
 
   defimpl ProsemirrorModel.Encoder.HTML do
@@ -61,11 +64,11 @@ defmodule ProsemirrorModel.Block.Heading do
       field(:level, :integer, default: 1)
     end
 
-    def changeset(struct, attrs \\ %{}) do
+    def changeset(struct, attrs \\ %{}, opts \\ []) do
       struct
       |> Ecto.Changeset.cast(attrs, [:level])
       |> Ecto.Changeset.validate_required([:level])
-      |> Ecto.Changeset.validate_inclusion(:level, 1..6)
+      |> Ecto.Changeset.validate_inclusion(:level, opts[:level] || 1..6)
     end
   end
 end
