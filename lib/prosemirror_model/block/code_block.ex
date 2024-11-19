@@ -10,7 +10,7 @@ defmodule ProsemirrorModel.Block.CodeBlock do
 
   @doc false
   embedded_schema do
-    embedded_prosemirror_content([text: Block.Text], array: true)
+    embedded_prosemirror_content([text: Block.Text], extend: false, array: true)
   end
 
   @doc false

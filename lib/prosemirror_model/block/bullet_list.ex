@@ -10,7 +10,7 @@ defmodule ProsemirrorModel.Block.BulletList do
 
   @doc false
   embedded_schema do
-    embedded_prosemirror_content([listItem: Block.ListItem], array: true)
+    embedded_prosemirror_content([listItem: Block.ListItem], extend: false, array: true)
   end
 
   @doc false

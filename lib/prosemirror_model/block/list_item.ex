@@ -17,6 +17,7 @@ defmodule ProsemirrorModel.Block.ListItem do
         orderedList: Block.OrderedList,
         paragraph: Block.Paragraph
       ],
+      extend: :listItem,
       array: true
     )
   end
@@ -26,12 +27,15 @@ defmodule ProsemirrorModel.Block.ListItem do
     struct
     |> Ecto.Changeset.cast(attrs, [])
     |> cast_prosemirror_content(
-      with: [
-        heading: {Block.Heading, :changeset, [opts]},
-        bulletList: {Block.BulletList, :changeset, [opts]},
-        orderedList: {Block.OrderedList, :changeset, [opts]},
-        paragraph: {Block.Paragraph, :changeset, [opts]}
-      ]
+      with:
+        extend_prosemirror_changeset(:listItem,
+          default: [
+            heading: {Block.Heading, :changeset, [opts]},
+            bulletList: {Block.BulletList, :changeset, [opts]},
+            orderedList: {Block.OrderedList, :changeset, [opts]},
+            paragraph: {Block.Paragraph, :changeset, [opts]}
+          ]
+        )
     )
   end
 

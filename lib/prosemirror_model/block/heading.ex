@@ -25,7 +25,14 @@ defmodule ProsemirrorModel.Block.Heading do
   @doc false
   embedded_schema do
     embeds_one(:attrs, __MODULE__.Attrs)
-    embedded_prosemirror_content([text: Block.Text], array: true)
+
+    embedded_prosemirror_content(
+      [
+        text: Block.Text
+      ],
+      extend: :heading,
+      array: true
+    )
   end
 
   @doc false
@@ -36,7 +43,14 @@ defmodule ProsemirrorModel.Block.Heading do
       with: &__MODULE__.Attrs.changeset(&1, &2, opts),
       required: true
     )
-    |> cast_prosemirror_content(with: [text: {Block.Text, :changeset, [opts]}])
+    |> cast_prosemirror_content(
+      with:
+        extend_prosemirror_changeset(:heading,
+          default: [
+            text: {Block.Text, :changeset, [opts]}
+          ]
+        )
+    )
   end
 
   defimpl ProsemirrorModel.Encoder.HTML do

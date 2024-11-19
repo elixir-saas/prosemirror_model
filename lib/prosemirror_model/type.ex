@@ -39,7 +39,7 @@ defmodule ProsemirrorModel.Type do
     changeset =
       struct
       |> Ecto.Changeset.cast(attrs, [])
-      |> ProsemirrorModel.ModifierHelper.cast_prosemirror_content(opts)
+      |> ProsemirrorModel.ModifierHelpers.cast_prosemirror_content(opts)
 
     if opts[:inline] do
       Ecto.Changeset.update_change(changeset, :content, fn

@@ -9,7 +9,11 @@ if config_env() == :test do
     ],
     blocks_modules: [
       heading: ProsemirrorModel.Block.Heading,
+      image: ProsemirrorModel.Block.Image,
       paragraph: ProsemirrorModel.Block.Paragraph,
       text: ProsemirrorModel.Block.Text
+    ],
+    extend: [
+      paragraph: [with: [:image]]
     ]
 end

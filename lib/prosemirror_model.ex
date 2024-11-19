@@ -5,7 +5,7 @@ defmodule ProsemirrorModel do
 
   defmacro __using__(_opts) do
     quote do
-      import ProsemirrorModel.ModifierHelper
+      import ProsemirrorModel.ModifierHelpers
     end
   end
 

@@ -18,6 +18,7 @@ defmodule ProsemirrorModel.Block.Blockquote do
         orderedList: Block.OrderedList,
         paragraph: Block.Paragraph
       ],
+      extend: :blockquote,
       array: true
     )
   end
@@ -27,13 +28,16 @@ defmodule ProsemirrorModel.Block.Blockquote do
     struct
     |> Ecto.Changeset.cast(attrs, [])
     |> cast_prosemirror_content(
-      with: [
-        codeBlock: {Block.CodeBlock, :changeset, [opts]},
-        blockquote: {__MODULE__, :changeset, [opts]},
-        bulletList: {Block.BulletList, :changeset, [opts]},
-        orderedList: {Block.OrderedList, :changeset, [opts]},
-        paragraph: {Block.Paragraph, :changeset, [opts]}
-      ]
+      with:
+        extend_prosemirror_changeset(:blockquote,
+          default: [
+            codeBlock: {Block.CodeBlock, :changeset, [opts]},
+            blockquote: {__MODULE__, :changeset, [opts]},
+            bulletList: {Block.BulletList, :changeset, [opts]},
+            orderedList: {Block.OrderedList, :changeset, [opts]},
+            paragraph: {Block.Paragraph, :changeset, [opts]}
+          ]
+        )
     )
   end
 

@@ -1,4 +1,4 @@
-defmodule ProsemirrorModel.ModifierHelper do
+defmodule ProsemirrorModel.ModifierHelpers do
   @moduledoc ~S"""
   Ecto schema helper that defines multiple macros to use inside an Ecto.Schema.
 
@@ -26,6 +26,15 @@ defmodule ProsemirrorModel.ModifierHelper do
   > Use macro `ProsemirrorModel.SchemaHelper.embedded_prosemirror_field/3`.
   """
   defmacro embedded_prosemirror_content(mapped_types, opts \\ []) when is_list(mapped_types) do
+    {extend_type, opts} = Keyword.pop(opts, :extend)
+
+    mapped_types =
+      if extend_type do
+        Keyword.merge(mapped_types, get_extend_config_by_type(extend_type))
+      else
+        mapped_types
+      end
+
     quote do
       embedded_prosemirror_field(:content, unquote(mapped_types), unquote(opts))
     end
@@ -45,7 +54,7 @@ defmodule ProsemirrorModel.ModifierHelper do
   > Use macro `ProsemirrorModel.SchemaHelper.embedded_prosemirror_field/3`.
   """
   defmacro embedded_prosemirror_marks do
-    marks = Application.get_env(:ex_prosemirror, :marks_modules, [])
+    marks = Application.get_env(:prosemirror_model, :marks_modules, [])
 
     quote do
       embedded_prosemirror_field(:marks, unquote(marks), array: true)
@@ -133,5 +142,37 @@ defmodule ProsemirrorModel.ModifierHelper do
     else
       %{type: PolymorphicEmbed, on_replace: :update, default: nil}
     end
+  end
+
+  @doc """
+  Extends modules passed to a prosemirror changeset.
+  """
+  defmacro extend_prosemirror_changeset(type, opts) do
+    default = Keyword.get(opts, :default, [])
+
+    extend_with =
+      Enum.map(get_extend_config_by_type(type), fn {type, module} ->
+        quote do
+          {unquote(type), {unquote(module), :changeset, [var!(opts)]}}
+        end
+      end)
+
+    extend_types = Keyword.merge(default, extend_with)
+
+    quote do
+      unquote(extend_types)
+    end
+  end
+
+  defp get_extend_config_by_type(type) do
+    extend = Application.get_env(:prosemirror_model, :extend, [])
+    blocks = Application.get_env(:prosemirror_model, :blocks_modules, [])
+
+    extend
+    |> Enum.find_value([], fn
+      {^type, opts} -> opts[:with] || []
+      _otherwise -> nil
+    end)
+    |> Enum.map(fn type -> {type, blocks[type]} end)
   end
 end
