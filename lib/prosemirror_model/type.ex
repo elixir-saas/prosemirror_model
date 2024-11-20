@@ -1,16 +1,16 @@
 defmodule ProsemirrorModel.Type do
   @moduledoc """
-  Generates a document schema with top level marks and blocks configured.
+  Generates a document schema with top level marks and nodes configured.
   """
 
   @marks_modules Application.compile_env(:prosemirror_model, :marks_modules, [])
-  @blocks_modules Application.compile_env(:prosemirror_model, :blocks_modules, [])
+  @nodes_modules Application.compile_env(:prosemirror_model, :nodes_modules, [])
 
   defmacro __using__(opts) do
     context = [
       marks: configured_marks(opts[:marks] || []),
-      blocks: configured_blocks(opts[:blocks] || []),
-      blocks_opts: configured_blocks_opts(opts[:blocks] || []),
+      nodes: configured_nodes(opts[:nodes] || []),
+      nodes_opts: configured_nodes_opts(opts[:nodes] || []),
       inline: opts[:inline] || false
     ]
 
@@ -57,20 +57,20 @@ defmodule ProsemirrorModel.Type do
     Keyword.take(@marks_modules, marks_config)
   end
 
-  defp configured_blocks(blocks_config) do
-    blocks_config =
-      Enum.map(blocks_config, fn
-        {block_id, _opts} -> block_id
-        block_id -> block_id
+  defp configured_nodes(nodes_config) do
+    nodes_config =
+      Enum.map(nodes_config, fn
+        {node_id, _opts} -> node_id
+        node_id -> node_id
       end)
 
-    Keyword.take(@blocks_modules, blocks_config)
+    Keyword.take(@nodes_modules, nodes_config)
   end
 
-  def configured_blocks_opts(blocks_config) do
-    Keyword.new(blocks_config, fn
-      {block_id, opts} -> {block_id, elem(Code.eval_quoted(opts), 0)}
-      block_id -> {block_id, []}
+  def configured_nodes_opts(nodes_config) do
+    Keyword.new(nodes_config, fn
+      {node_id, opts} -> {node_id, elem(Code.eval_quoted(opts), 0)}
+      node_id -> {node_id, []}
     end)
   end
 
@@ -78,15 +78,15 @@ defmodule ProsemirrorModel.Type do
     quote do
       embedded_schema do
         field(:type, :string)
-        embedded_prosemirror_content(unquote(context[:blocks]), array: true)
+        embedded_prosemirror_content(unquote(context[:nodes]), array: true)
       end
     end
   end
 
   defp type_changeset(context) do
     with_opts =
-      Keyword.new(context[:blocks], fn {name, module} ->
-        extra_opts = Keyword.get(context[:blocks_opts], name, [])
+      Keyword.new(context[:nodes], fn {name, module} ->
+        extra_opts = Keyword.get(context[:nodes_opts], name, [])
         embed_opts = Keyword.merge(extra_opts, marks: context[:marks])
 
         {name, {module, :changeset, [embed_opts]}}

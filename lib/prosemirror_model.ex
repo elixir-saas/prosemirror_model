@@ -11,5 +11,5 @@ defmodule ProsemirrorModel do
 
   defdelegate extract_text(struct), to: ProsemirrorModel.Extract
 
-  defdelegate extract_blocks(struct, module), to: ProsemirrorModel.Extract
+  defdelegate extract_nodes(struct, module), to: ProsemirrorModel.Extract
 end

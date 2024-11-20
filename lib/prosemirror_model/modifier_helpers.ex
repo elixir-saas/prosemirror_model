@@ -3,9 +3,9 @@ defmodule ProsemirrorModel.ModifierHelpers do
   Ecto schema helper that defines multiple macros to use inside an Ecto.Schema.
 
   In contrast of `ProsemirrorModel.Schema`, this module should not be imported to your business schema.
-  It **MUST** be used to create custom block / marks.
+  It **MUST** be used to create custom nodes / marks.
 
-  It helps you build custom blocks / marks for `ProsemirrorModel`.
+  It helps you build custom nodes / marks for `ProsemirrorModel`.
 
   > This module is automatically import if you use `ProsemirrorModel`.
   """
@@ -17,7 +17,7 @@ defmodule ProsemirrorModel.ModifierHelpers do
 
   ## Examples
 
-        embedded_prosemirror_content([text: ProsemirrorModel.Block.Text])
+        embedded_prosemirror_content([text: ProsemirrorModel.Node.Text])
 
   ## Options
 
@@ -68,13 +68,13 @@ defmodule ProsemirrorModel.ModifierHelpers do
 
   Single element
 
-      embedded_prosemirror_field(:content, [text: ProsemirrorModel.Block.Text], array: false)
+      embedded_prosemirror_field(:content, [text: ProsemirrorModel.Node.Text], array: false)
       # same as
-      embedded_prosemirror_field(:content, [text: ProsemirrorModel.Block.Text])
+      embedded_prosemirror_field(:content, [text: ProsemirrorModel.Node.Text])
 
   Multiple elements
 
-      embedded_prosemirror_field(:content, [text: ProsemirrorModel.Block.Text], array: true)
+      embedded_prosemirror_field(:content, [text: ProsemirrorModel.Node.Text], array: true)
 
   ## Options
 
@@ -112,15 +112,15 @@ defmodule ProsemirrorModel.ModifierHelpers do
 
       struct_or_changeset
       |> cast(attrs, some_fields_to_cast)
-      |> cast_prosemirror_content(with: [text: {ProsemirrorModel.Block.Text, :changeset, [opts]}])
+      |> cast_prosemirror_content(with: [text: {ProsemirrorModel.Node.Text, :changeset, [opts]}])
 
-  Block `ProsemirrorModel.Block.Text` will be cast using the `changeset/3` with params
+  Node `ProsemirrorModel.Node.Text` will be cast using the `changeset/3` with params
 
-  * %ProsemirrorModel.Block.Text{...}
+  * %ProsemirrorModel.Node.Text{...}
   * attrs (map of data to cast)
   * opts: opts to use in the changeset (e.g. allowed marks to cast defined in the ProsemirrorModel type.)
 
-  > If a block/mark's type is not specified in the `with` opts, the `changeset/2` will be use.
+  > If a node/mark's type is not specified in the `with` opts, the `changeset/2` will be use.
 
   ## Options
 
@@ -166,13 +166,13 @@ defmodule ProsemirrorModel.ModifierHelpers do
 
   defp get_extend_config_by_type(type) do
     extend = Application.get_env(:prosemirror_model, :extend, [])
-    blocks = Application.get_env(:prosemirror_model, :blocks_modules, [])
+    nodes = Application.get_env(:prosemirror_model, :nodes_modules, [])
 
     extend
     |> Enum.find_value([], fn
       {^type, opts} -> opts[:with] || []
       _otherwise -> nil
     end)
-    |> Enum.map(fn type -> {type, blocks[type]} end)
+    |> Enum.map(fn type -> {type, nodes[type]} end)
   end
 end

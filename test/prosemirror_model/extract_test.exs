@@ -1,40 +1,40 @@
 defmodule ProsemirrorModel.ExtractTest do
   use ExUnit.Case
 
-  alias ProsemirrorModel.Block
+  alias ProsemirrorModel.Node
 
   describe "extract_text/1" do
     test "extracts text from a heading" do
       document =
-        %Block.Heading{
-          attrs: %Block.Heading.Attrs{level: 1},
+        %Node.Heading{
+          attrs: %Node.Heading.Attrs{level: 1},
           content: [
-            %Block.Text{text: "hello"},
-            %Block.Text{text: "world"}
+            %Node.Text{text: "hello"},
+            %Node.Text{text: "world"}
           ]
         }
 
       assert ["hello", "world"] = ProsemirrorModel.Extract.extract_text(document)
     end
 
-    test "extracts text from nested blocks" do
+    test "extracts text from nested nodes" do
       document =
         %{
           content: [
-            %Block.Heading{
-              attrs: %Block.Heading.Attrs{level: 1},
-              content: [%Block.Text{text: "hello"}]
+            %Node.Heading{
+              attrs: %Node.Heading.Attrs{level: 1},
+              content: [%Node.Text{text: "hello"}]
             },
-            %Block.Paragraph{
+            %Node.Paragraph{
               content: [
-                %Block.OrderedList{
+                %Node.OrderedList{
                   content: [
-                    %Block.ListItem{
-                      content: [%Block.Text{text: "nested"}]
+                    %Node.ListItem{
+                      content: [%Node.Text{text: "nested"}]
                     }
                   ]
                 },
-                %Block.Text{text: "text"}
+                %Node.Text{text: "text"}
               ]
             }
           ]
@@ -44,26 +44,26 @@ defmodule ProsemirrorModel.ExtractTest do
     end
   end
 
-  describe "extract_blocks/2" do
+  describe "extract_nodes/2" do
     test "extracts headings" do
       document =
         %{
           content: [
-            %Block.Paragraph{
+            %Node.Paragraph{
               content: [
-                %Block.Heading{
-                  attrs: %Block.Heading.Attrs{level: 1},
-                  content: [%Block.Text{text: "h1"}]
+                %Node.Heading{
+                  attrs: %Node.Heading.Attrs{level: 1},
+                  content: [%Node.Text{text: "h1"}]
                 },
-                %Block.Text{text: "Heading"}
+                %Node.Text{text: "Heading"}
               ]
             },
-            %Block.Paragraph{
+            %Node.Paragraph{
               content: [
-                %Block.Text{text: "Some leading text"},
-                %Block.Heading{
-                  attrs: %Block.Heading.Attrs{level: 2},
-                  content: [%Block.Text{text: "h2"}]
+                %Node.Text{text: "Some leading text"},
+                %Node.Heading{
+                  attrs: %Node.Heading.Attrs{level: 2},
+                  content: [%Node.Text{text: "h2"}]
                 }
               ]
             }
@@ -71,11 +71,11 @@ defmodule ProsemirrorModel.ExtractTest do
         }
 
       headings = [
-        %Block.Heading{attrs: %Block.Heading.Attrs{level: 1}, content: [%Block.Text{text: "h1"}]},
-        %Block.Heading{attrs: %Block.Heading.Attrs{level: 2}, content: [%Block.Text{text: "h2"}]}
+        %Node.Heading{attrs: %Node.Heading.Attrs{level: 1}, content: [%Node.Text{text: "h1"}]},
+        %Node.Heading{attrs: %Node.Heading.Attrs{level: 2}, content: [%Node.Text{text: "h2"}]}
       ]
 
-      assert ^headings = ProsemirrorModel.Extract.extract_blocks(document, Block.Heading)
+      assert ^headings = ProsemirrorModel.Extract.extract_nodes(document, Node.Heading)
     end
   end
 end

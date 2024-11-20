@@ -11,7 +11,7 @@ defprotocol ProsemirrorModel.Encoder.HTML do
 
         def encode(struct, opts) do
           assigns = Map.new(opts)
-          ~H"<span class={@class}><%= render_slot(@inner_block) %></span>"
+          ~H"<span class={@class}><%= @inner_content %></span>"
         end
       end
 
@@ -22,7 +22,7 @@ defprotocol ProsemirrorModel.Encoder.HTML do
 
   ## Options
 
-  * `inner_block`: Content of the encoded block / marks, either a string or a `Phoenix.LiveView.Rendered` struct.
+  * `inner_content`: Content of the encoded nodes / marks, either a string or safe html.
 
   """
   def encode(struct, opts \\ [])

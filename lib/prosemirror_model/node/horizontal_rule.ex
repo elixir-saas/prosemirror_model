@@ -1,4 +1,4 @@
-defmodule ProsemirrorModel.Block.HorizontalRule do
+defmodule ProsemirrorModel.Node.HorizontalRule do
   @moduledoc ~S"""
   Represents a horizontal rule (`<hr />`).
   """

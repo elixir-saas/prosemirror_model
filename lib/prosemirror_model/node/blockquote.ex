@@ -1,4 +1,4 @@
-defmodule ProsemirrorModel.Block.Blockquote do
+defmodule ProsemirrorModel.Node.Blockquote do
   @moduledoc ~S"""
   Represents a blockquote (`<blockquote>...</blockquote>`).
   """
@@ -6,17 +6,17 @@ defmodule ProsemirrorModel.Block.Blockquote do
   use ProsemirrorModel.Schema
   use ProsemirrorModel.Encoder.JSON, type: :blockquote
 
-  alias ProsemirrorModel.Block
+  alias ProsemirrorModel.Node
 
   @doc false
   embedded_schema do
     embedded_prosemirror_content(
       [
-        codeBlock: Block.CodeBlock,
+        codeBlock: Node.CodeBlock,
         blockquote: __MODULE__,
-        bulletList: Block.BulletList,
-        orderedList: Block.OrderedList,
-        paragraph: Block.Paragraph
+        bulletList: Node.BulletList,
+        orderedList: Node.OrderedList,
+        paragraph: Node.Paragraph
       ],
       extend: :blockquote,
       array: true
@@ -31,11 +31,11 @@ defmodule ProsemirrorModel.Block.Blockquote do
       with:
         extend_prosemirror_changeset(:blockquote,
           default: [
-            codeBlock: {Block.CodeBlock, :changeset, [opts]},
+            codeBlock: {Node.CodeBlock, :changeset, [opts]},
             blockquote: {__MODULE__, :changeset, [opts]},
-            bulletList: {Block.BulletList, :changeset, [opts]},
-            orderedList: {Block.OrderedList, :changeset, [opts]},
-            paragraph: {Block.Paragraph, :changeset, [opts]}
+            bulletList: {Node.BulletList, :changeset, [opts]},
+            orderedList: {Node.OrderedList, :changeset, [opts]},
+            paragraph: {Node.Paragraph, :changeset, [opts]}
           ]
         )
     )

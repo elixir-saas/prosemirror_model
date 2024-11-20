@@ -1,8 +1,8 @@
-defmodule ProsemirrorModel.Block.Heading do
+defmodule ProsemirrorModel.Node.Heading do
   @moduledoc ~S"""
   Represents a heading (`<h1>...</h1>`).
 
-  Contains multiple `ProsemirrorModel.Block.Text` and has attributes that
+  Contains multiple `ProsemirrorModel.Node.Text` and has attributes that
   define the level of the heading (between 1 and 6).
 
   ## Usage
@@ -20,7 +20,7 @@ defmodule ProsemirrorModel.Block.Heading do
   use ProsemirrorModel.Schema
   use ProsemirrorModel.Encoder.JSON, type: :heading
 
-  alias ProsemirrorModel.Block
+  alias ProsemirrorModel.Node
 
   @doc false
   embedded_schema do
@@ -28,7 +28,7 @@ defmodule ProsemirrorModel.Block.Heading do
 
     embedded_prosemirror_content(
       [
-        text: Block.Text
+        text: Node.Text
       ],
       extend: :heading,
       array: true
@@ -47,7 +47,7 @@ defmodule ProsemirrorModel.Block.Heading do
       with:
         extend_prosemirror_changeset(:heading,
           default: [
-            text: {Block.Text, :changeset, [opts]}
+            text: {Node.Text, :changeset, [opts]}
           ]
         )
     )

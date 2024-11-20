@@ -1,4 +1,4 @@
-defmodule ProsemirrorModel.Block.HardBreak do
+defmodule ProsemirrorModel.Node.HardBreak do
   @moduledoc """
   Represents a hard break (`<br>`).
   """

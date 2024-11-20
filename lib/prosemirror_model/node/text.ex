@@ -1,12 +1,12 @@
-defmodule ProsemirrorModel.Block.Text do
+defmodule ProsemirrorModel.Node.Text do
   @moduledoc """
-  Represents inline text. Contained in most blocks, but not in the top level document.
+  Represents inline text. Contained in most nodes, but not in the top level document.
 
-  When creating an `ProsemirrorModel` block you can use this module with:
+  When creating an `ProsemirrorModel` node you can use this module with:
 
-      embedded_prosemirror_content([text: ProsemirrorModel.Block.Text], array: true)
+      embedded_prosemirror_content([text: ProsemirrorModel.Node.Text], array: true)
 
-  You can also set the `:array` option to `false` if you want to inline the block.
+  You can also set the `:array` option to `false` if you want to inline the node.
 
   > The macro `embedded_prosemirror_content` is imported by using `ProsemirrorModel`.
   """

@@ -2,7 +2,7 @@ defmodule ProsemirrorModel.Extract do
   @doc """
   Extracts a list of strings from all text nodes.
   """
-  def extract_text(%ProsemirrorModel.Block.Text{text: text}) do
+  def extract_text(%ProsemirrorModel.Node.Text{text: text}) do
     [text]
   end
 
@@ -13,15 +13,15 @@ defmodule ProsemirrorModel.Extract do
   def extract_text(_otherwise), do: []
 
   @doc """
-  Extracts blocks of a particular module from a document tree.
+  Extracts nodes of a particular module from a document tree.
   """
-  def extract_blocks(%block_module{} = block, block_module) do
-    [block]
+  def extract_nodes(%node_module{} = node, node_module) do
+    [node]
   end
 
-  def extract_blocks(%{content: content}, block_module) when is_list(content) do
-    Enum.flat_map(content, &extract_blocks(&1, block_module))
+  def extract_nodes(%{content: content}, node_module) when is_list(content) do
+    Enum.flat_map(content, &extract_nodes(&1, node_module))
   end
 
-  def extract_blocks(_otherwise, _block_module), do: []
+  def extract_nodes(_otherwise, _node_module), do: []
 end

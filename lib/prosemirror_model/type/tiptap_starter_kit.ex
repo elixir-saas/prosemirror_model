@@ -7,7 +7,7 @@ defmodule ProsemirrorModel.Type.TiptapStarterKit do
       :strike
     ]
 
-    blocks = [
+    nodes = [
       :blockquote,
       :bulletList,
       :codeBlock,
@@ -23,7 +23,7 @@ defmodule ProsemirrorModel.Type.TiptapStarterKit do
     combined_opts = [
       inline: opts[:inline] || false,
       marks: Enum.dedup(marks ++ Keyword.get(opts, :marks, [])),
-      blocks: Enum.dedup(blocks ++ Keyword.get(opts, :blocks, [])),
+      nodes: Enum.dedup(nodes ++ Keyword.get(opts, :nodes, [])),
       extend: opts[:extend]
     ]
 

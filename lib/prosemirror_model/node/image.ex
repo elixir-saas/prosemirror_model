@@ -1,4 +1,4 @@
-defmodule ProsemirrorModel.Block.Image do
+defmodule ProsemirrorModel.Node.Image do
   @moduledoc ~S"""
   Represents an image (`<img />`).
   """

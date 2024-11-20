@@ -1,4 +1,4 @@
-defmodule ProsemirrorModel.Block.OrderedList do
+defmodule ProsemirrorModel.Node.OrderedList do
   @moduledoc """
   Represents an ordered list (`<ol>...</ol>`).
   """
@@ -6,12 +6,12 @@ defmodule ProsemirrorModel.Block.OrderedList do
   use ProsemirrorModel.Schema
   use ProsemirrorModel.Encoder.JSON, type: :orderedList
 
-  alias ProsemirrorModel.Block
+  alias ProsemirrorModel.Node
 
   @doc false
   embedded_schema do
     embeds_one(:attrs, __MODULE__.Attrs)
-    embedded_prosemirror_content([listItem: Block.ListItem], extend: false, array: true)
+    embedded_prosemirror_content([listItem: Node.ListItem], extend: false, array: true)
   end
 
   @doc false
@@ -19,7 +19,7 @@ defmodule ProsemirrorModel.Block.OrderedList do
     struct
     |> Ecto.Changeset.cast(attrs, [])
     |> Ecto.Changeset.cast_embed(:attrs, required: false)
-    |> cast_prosemirror_content(with: [listItem: {Block.ListItem, :changeset, [opts]}])
+    |> cast_prosemirror_content(with: [listItem: {Node.ListItem, :changeset, [opts]}])
   end
 
   defimpl ProsemirrorModel.Encoder.HTML do

@@ -1,4 +1,4 @@
-defmodule ProsemirrorModel.Block.ListItem do
+defmodule ProsemirrorModel.Node.ListItem do
   @moduledoc ~S"""
   Represents a list item (`<li>...</li>`).
   """
@@ -6,16 +6,16 @@ defmodule ProsemirrorModel.Block.ListItem do
   use ProsemirrorModel.Schema
   use ProsemirrorModel.Encoder.JSON, type: :listItem
 
-  alias ProsemirrorModel.Block
+  alias ProsemirrorModel.Node
 
   @doc false
   embedded_schema do
     embedded_prosemirror_content(
       [
-        heading: Block.Heading,
-        bulletList: Block.BulletList,
-        orderedList: Block.OrderedList,
-        paragraph: Block.Paragraph
+        heading: Node.Heading,
+        bulletList: Node.BulletList,
+        orderedList: Node.OrderedList,
+        paragraph: Node.Paragraph
       ],
       extend: :listItem,
       array: true
@@ -30,10 +30,10 @@ defmodule ProsemirrorModel.Block.ListItem do
       with:
         extend_prosemirror_changeset(:listItem,
           default: [
-            heading: {Block.Heading, :changeset, [opts]},
-            bulletList: {Block.BulletList, :changeset, [opts]},
-            orderedList: {Block.OrderedList, :changeset, [opts]},
-            paragraph: {Block.Paragraph, :changeset, [opts]}
+            heading: {Node.Heading, :changeset, [opts]},
+            bulletList: {Node.BulletList, :changeset, [opts]},
+            orderedList: {Node.OrderedList, :changeset, [opts]},
+            paragraph: {Node.Paragraph, :changeset, [opts]}
           ]
         )
     )

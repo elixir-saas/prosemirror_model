@@ -1,7 +1,7 @@
 defmodule ProsemirrorModel.TypeTest do
   use ExUnit.Case
 
-  alias ProsemirrorModel.Block
+  alias ProsemirrorModel.Node
   alias ProsemirrorModel.TestType
 
   test "casts data to generated type struct" do
@@ -23,12 +23,12 @@ defmodule ProsemirrorModel.TypeTest do
     expected = %TestType{
       type: "doc",
       content: [
-        %Block.Heading{
-          attrs: %Block.Heading.Attrs{level: 1},
-          content: [%Block.Text{text: "heading"}]
+        %Node.Heading{
+          attrs: %Node.Heading.Attrs{level: 1},
+          content: [%Node.Text{text: "heading"}]
         },
-        %Block.Paragraph{
-          content: [%Block.Text{text: "hello world"}]
+        %Node.Paragraph{
+          content: [%Node.Text{text: "hello world"}]
         }
       ]
     }
@@ -58,10 +58,10 @@ defmodule ProsemirrorModel.TypeTest do
     expected = %TestType{
       type: "doc",
       content: [
-        %Block.Paragraph{
+        %Node.Paragraph{
           content: [
-            %Block.Text{text: "hello world"},
-            %Block.Image{attrs: %Block.Image.Attrs{src: "https://example.com"}}
+            %Node.Text{text: "hello world"},
+            %Node.Image{attrs: %Node.Image.Attrs{src: "https://example.com"}}
           ]
         }
       ]

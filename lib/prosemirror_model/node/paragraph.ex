@@ -1,4 +1,4 @@
-defmodule ProsemirrorModel.Block.Paragraph do
+defmodule ProsemirrorModel.Node.Paragraph do
   @moduledoc ~S"""
   Represents a paragraph (`<p>...</p>`).
   """
@@ -6,16 +6,16 @@ defmodule ProsemirrorModel.Block.Paragraph do
   use ProsemirrorModel.Schema
   use ProsemirrorModel.Encoder.JSON, type: :paragraph
 
-  alias ProsemirrorModel.Block
+  alias ProsemirrorModel.Node
 
   @doc false
   embedded_schema do
     embedded_prosemirror_content(
       [
-        bulletList: Block.BulletList,
-        hardBreak: Block.HardBreak,
-        orderedList: Block.OrderedList,
-        text: Block.Text
+        bulletList: Node.BulletList,
+        hardBreak: Node.HardBreak,
+        orderedList: Node.OrderedList,
+        text: Node.Text
       ],
       extend: :paragraph,
       array: true
@@ -30,10 +30,10 @@ defmodule ProsemirrorModel.Block.Paragraph do
       with:
         extend_prosemirror_changeset(:paragraph,
           default: [
-            bulletList: {Block.BulletList, :changeset, [opts]},
-            hardBreak: {Block.HardBreak, :changeset, [opts]},
-            orderedList: {Block.OrderedList, :changeset, [opts]},
-            text: {Block.Text, :changeset, [opts]}
+            bulletList: {Node.BulletList, :changeset, [opts]},
+            hardBreak: {Node.HardBreak, :changeset, [opts]},
+            orderedList: {Node.OrderedList, :changeset, [opts]},
+            text: {Node.Text, :changeset, [opts]}
           ]
         )
     )

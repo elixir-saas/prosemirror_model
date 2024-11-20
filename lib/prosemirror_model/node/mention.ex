@@ -1,4 +1,4 @@
-defmodule ProsemirrorModel.Block.Mention do
+defmodule ProsemirrorModel.Node.Mention do
   @moduledoc ~S"""
   Represents a mention (`<span class="mention">...</span>`).
   """

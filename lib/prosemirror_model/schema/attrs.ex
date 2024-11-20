@@ -1,6 +1,6 @@
 defmodule ProsemirrorModel.Schema.Attrs do
   @moduledoc ~S"""
-  Module helper for `Ecto.Schema` for block and mark attrs.
+  Module helper for `Ecto.Schema` for node and mark attrs.
   """
 
   defmacro __using__(_opts) do

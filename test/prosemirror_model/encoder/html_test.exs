@@ -1,7 +1,7 @@
 defmodule ProsemirrorModel.Encoder.HTMLTest do
   use ExUnit.Case, async: true
 
-  alias ProsemirrorModel.Block.{
+  alias ProsemirrorModel.Node.{
     Blockquote,
     BulletList,
     CodeBlock,

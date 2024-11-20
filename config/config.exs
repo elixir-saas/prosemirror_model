@@ -7,11 +7,11 @@ if config_env() == :test do
       italic: ProsemirrorModel.Mark.Italic,
       underline: ProsemirrorModel.Mark.Underline
     ],
-    blocks_modules: [
-      heading: ProsemirrorModel.Block.Heading,
-      image: ProsemirrorModel.Block.Image,
-      paragraph: ProsemirrorModel.Block.Paragraph,
-      text: ProsemirrorModel.Block.Text
+    nodes_modules: [
+      heading: ProsemirrorModel.Node.Heading,
+      image: ProsemirrorModel.Node.Image,
+      paragraph: ProsemirrorModel.Node.Paragraph,
+      text: ProsemirrorModel.Node.Text
     ],
     extend: [
       paragraph: [with: [:image]]
