@@ -67,7 +67,7 @@ defmodule ProsemirrorModel.Encoder.JSONTest do
     end
 
     test "encodes hard_break" do
-      assert encode_decode(%HardBreak{}) == %{"type" => "hard_break"}
+      assert encode_decode(%HardBreak{}) == %{"type" => "hardBreak"}
     end
 
     test "encodes heading" do

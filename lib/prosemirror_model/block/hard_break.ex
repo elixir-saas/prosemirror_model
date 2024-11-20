@@ -3,11 +3,11 @@ defmodule ProsemirrorModel.Block.HardBreak do
   Represents a hard break (`<br>`).
   """
   use ProsemirrorModel.Schema
-  use ProsemirrorModel.Encoder.JSON, type: :hard_break
+  use ProsemirrorModel.Encoder.JSON, type: :hardBreak
 
   embedded_schema(do: nil)
 
-  def changeset(struct, attrs \\ %{}) do
+  def changeset(struct, attrs \\ %{}, _opts \\ []) do
     Ecto.Changeset.cast(struct, attrs, [])
   end
 
