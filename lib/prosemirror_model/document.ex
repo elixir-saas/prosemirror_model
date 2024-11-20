@@ -1,4 +1,4 @@
-defmodule ProsemirrorModel.Type do
+defmodule ProsemirrorModel.Document do
   @moduledoc """
   Generates a document schema with top level marks and nodes configured.
   """
@@ -98,7 +98,7 @@ defmodule ProsemirrorModel.Type do
       def changeset(struct, attrs \\ %{}) do
         struct
         |> Ecto.Changeset.cast(attrs, [:type])
-        |> ProsemirrorModel.Type.changeset(attrs, unquote(Macro.escape(changeset_opts)))
+        |> ProsemirrorModel.Document.changeset(attrs, unquote(Macro.escape(changeset_opts)))
       end
     end
   end

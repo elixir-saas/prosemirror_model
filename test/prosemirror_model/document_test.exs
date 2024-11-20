@@ -1,10 +1,10 @@
-defmodule ProsemirrorModel.TypeTest do
+defmodule ProsemirrorModel.DocumentTest do
   use ExUnit.Case
 
   alias ProsemirrorModel.Node
-  alias ProsemirrorModel.TestType
+  alias ProsemirrorModel.TestDocument
 
-  test "casts data to generated type struct" do
+  test "casts data to generated document struct" do
     attrs = %{
       type: "doc",
       content: [
@@ -20,7 +20,7 @@ defmodule ProsemirrorModel.TypeTest do
       ]
     }
 
-    expected = %TestType{
+    expected = %TestDocument{
       type: "doc",
       content: [
         %Node.Heading{
@@ -34,14 +34,14 @@ defmodule ProsemirrorModel.TypeTest do
     }
 
     data =
-      %TestType{}
-      |> TestType.changeset(attrs)
+      %TestDocument{}
+      |> TestDocument.changeset(attrs)
       |> Ecto.Changeset.apply_changes()
 
     assert ^expected = data
   end
 
-  test "extends a type with another content type" do
+  test "extends a node with another content node" do
     attrs = %{
       type: "doc",
       content: [
@@ -55,7 +55,7 @@ defmodule ProsemirrorModel.TypeTest do
       ]
     }
 
-    expected = %TestType{
+    expected = %TestDocument{
       type: "doc",
       content: [
         %Node.Paragraph{
@@ -68,8 +68,8 @@ defmodule ProsemirrorModel.TypeTest do
     }
 
     data =
-      %TestType{}
-      |> TestType.changeset(attrs)
+      %TestDocument{}
+      |> TestDocument.changeset(attrs)
       |> Ecto.Changeset.apply_changes()
 
     assert ^expected = data

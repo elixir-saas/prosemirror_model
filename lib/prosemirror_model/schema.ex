@@ -25,13 +25,13 @@ defmodule ProsemirrorModel.Schema do
   ## Examples
 
       schema "my_schema" do
-        prosemirror_field :title, DocumentType
+        prosemirror_field :title, MyDocument
       end
 
       # Compiles to:
 
       field :title_plain, :string, virtual: true
-      embeds_one :title, DocumentType
+      embeds_one :title, MyDocument
 
   """
   defmacro prosemirror_field(name, type) do

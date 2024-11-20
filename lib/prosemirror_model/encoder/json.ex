@@ -4,8 +4,8 @@ defmodule ProsemirrorModel.Encoder.JSON do
 
   ## Example
 
-      defmodule MyCustomType do
-        use ProsemirrorModel.Encoder.JSON, type: :my_custom_type
+      defmodule MyCustomNode do
+        use ProsemirrorModel.Encoder.JSON, type: :my_custom_node
       end
 
   """

@@ -1,4 +1,4 @@
-defmodule ProsemirrorModel.Type.TiptapStarterKit do
+defmodule ProsemirrorModel.Document.TiptapStarterKit do
   defmacro __using__(opts) do
     marks = [
       :bold,
@@ -28,7 +28,7 @@ defmodule ProsemirrorModel.Type.TiptapStarterKit do
     ]
 
     quote do
-      use ProsemirrorModel.Type, unquote(combined_opts)
+      use ProsemirrorModel.Document, unquote(combined_opts)
     end
   end
 end
