@@ -111,13 +111,14 @@ defmodule ProsemirrorModel.Encoder.HTMLTest do
     test "encodes ordered_list" do
       ordered_list =
         %OrderedList{
+          attrs: %OrderedList.Attrs{start: 1},
           content: [
             %ListItem{content: [%Text{text: "a"}]},
             %ListItem{content: [%Text{text: "b"}]}
           ]
         }
 
-      assert render_to_string(ordered_list) == "<ol><li>a</li><li>b</li></ol>"
+      assert render_to_string(ordered_list) == ~S'<ol start="1"><li>a</li><li>b</li></ol>'
     end
 
     test "encodes paragraph" do

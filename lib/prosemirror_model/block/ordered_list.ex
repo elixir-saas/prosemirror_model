@@ -10,6 +10,7 @@ defmodule ProsemirrorModel.Block.OrderedList do
 
   @doc false
   embedded_schema do
+    embeds_one(:attrs, __MODULE__.Attrs)
     embedded_prosemirror_content([listItem: Block.ListItem], extend: false, array: true)
   end
 
@@ -17,6 +18,7 @@ defmodule ProsemirrorModel.Block.OrderedList do
   def changeset(struct, attrs \\ %{}, opts \\ []) do
     struct
     |> Ecto.Changeset.cast(attrs, [])
+    |> Ecto.Changeset.cast_embed(:attrs, required: false)
     |> cast_prosemirror_content(with: [listItem: {Block.ListItem, :changeset, [opts]}])
   end
 
@@ -25,10 +27,27 @@ defmodule ProsemirrorModel.Block.OrderedList do
 
     def encode(struct, opts) do
       assigns = %{
+        struct: struct,
         content: ProsemirrorModel.Encoder.HTML.encode(struct.content, opts)
       }
 
-      ProsemirrorModel.EncoderHelpers.render(~H"<ol><%= @content %></ol>")
+      ProsemirrorModel.EncoderHelpers.render(
+        ~H"<ol start={@struct.attrs.start}><%= @content %></ol>"
+      )
+    end
+  end
+
+  ## Attrs
+
+  defmodule __MODULE__.Attrs do
+    use ProsemirrorModel.Schema.Attrs
+
+    embedded_schema do
+      field(:start, :integer)
+    end
+
+    def changeset(struct, attrs \\ %{}) do
+      Ecto.Changeset.cast(struct, attrs, [:start])
     end
   end
 end

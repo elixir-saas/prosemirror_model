@@ -135,6 +135,7 @@ defmodule ProsemirrorModel.Encoder.JSONTest do
     test "encodes ordered_list" do
       ordered_list =
         %OrderedList{
+          attrs: %OrderedList.Attrs{start: 1},
           content: [
             %ListItem{content: [%Text{text: "a"}]},
             %ListItem{content: [%Text{text: "b"}]}
@@ -152,7 +153,8 @@ defmodule ProsemirrorModel.Encoder.JSONTest do
                    "type" => "listItem"
                  }
                ],
-               "type" => "orderedList"
+               "type" => "orderedList",
+               "attrs" => %{"start" => 1}
              }
     end
 
