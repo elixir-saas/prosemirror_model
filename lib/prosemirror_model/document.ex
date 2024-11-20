@@ -18,6 +18,8 @@ defmodule ProsemirrorModel.Document do
       use Ecto.Schema
       use ProsemirrorModel
 
+      @primary_key false
+
       unquote(type_schema(context))
       unquote(type_changeset(context))
 
