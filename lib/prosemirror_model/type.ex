@@ -3,8 +3,8 @@ defmodule ProsemirrorModel.Type do
   Generates a document schema with top level marks and blocks configured.
   """
 
-  @marks_modules Application.compile_env!(:prosemirror_model, :marks_modules)
-  @blocks_modules Application.compile_env!(:prosemirror_model, :blocks_modules)
+  @marks_modules Application.compile_env(:prosemirror_model, :marks_modules, [])
+  @blocks_modules Application.compile_env(:prosemirror_model, :blocks_modules, [])
 
   defmacro __using__(opts) do
     context = [
