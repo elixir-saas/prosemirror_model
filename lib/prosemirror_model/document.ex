@@ -53,6 +53,46 @@ defmodule ProsemirrorModel.Document do
     end
   end
 
+  ## Helpers
+
+  @doc """
+  Trims leading and trailing whitespace from text nodes, only when the first
+  or last nodes in the document are of type `ProsemirrorModel.Node.Text`.
+  """
+  def trim(struct) do
+    struct
+    |> update_leading_node(fn node -> update_text(node, &String.trim_leading/1) end)
+    |> update_trailing_node(fn node -> update_text(node, &String.trim_trailing/1) end)
+  end
+
+  @doc """
+  Updates the leading leaf node of a document with a function.
+  """
+  def update_leading_node(%{content: [leading | rest]} = struct, fun) do
+    %{struct | content: [update_leading_node(leading, fun) | rest]}
+  end
+
+  def update_leading_node(struct, fun), do: fun.(struct)
+
+  @doc """
+  Updates the trailing leaf node of a document with a function.
+  """
+  def update_trailing_node(%{content: [_leading | _rest]} = struct, fun) do
+    {last, init} = List.pop_at(struct.content, -1)
+    %{struct | content: init ++ [update_trailing_node(last, fun)]}
+  end
+
+  def update_trailing_node(struct, fun), do: fun.(struct)
+
+  @doc """
+  Updates the content of a text node, otherwise returns the unchanged node.
+  """
+  def update_text(%ProsemirrorModel.Node.Text{} = struct, fun) do
+    Map.update!(struct, :text, fun)
+  end
+
+  def update_text(struct, _fun), do: struct
+
   ## Private
 
   defp configured_marks(marks_config) do
