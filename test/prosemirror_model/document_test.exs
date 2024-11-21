@@ -245,6 +245,12 @@ defmodule ProsemirrorModel.DocumentTest do
       assert ^expected = Document.update_text(struct, &String.upcase/1)
     end
 
+    test "ignores nil text content" do
+      struct = %Node.Text{text: nil}
+
+      assert ^struct = Document.update_text(struct, &String.upcase/1)
+    end
+
     test "ignores a non-text node" do
       struct = %Node.HorizontalRule{}
 

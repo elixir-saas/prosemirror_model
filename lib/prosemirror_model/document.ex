@@ -61,7 +61,7 @@ defmodule ProsemirrorModel.Document do
   """
   def empty?(%{content: []}), do: true
   def empty?(%{content: content}), do: Enum.all?(content, &empty?/1)
-  def empty?(%ProsemirrorModel.Node.Text{text: text}), do: String.trim(text) == ""
+  def empty?(%ProsemirrorModel.Node.Text{text: text}), do: text == nil || String.trim(text) == ""
   def empty?(_struct), do: false
 
   @doc """
@@ -94,10 +94,10 @@ defmodule ProsemirrorModel.Document do
   def update_trailing_node(struct, fun), do: fun.(struct)
 
   @doc """
-  Updates the content of a text node, otherwise returns the unchanged node.
+  Updates the string contents of a text node, otherwise returns the unchanged node.
   """
-  def update_text(%ProsemirrorModel.Node.Text{} = struct, fun) do
-    Map.update!(struct, :text, fun)
+  def update_text(%ProsemirrorModel.Node.Text{text: text} = struct, fun) when is_binary(text) do
+    %{struct | text: fun.(text)}
   end
 
   def update_text(struct, _fun), do: struct
