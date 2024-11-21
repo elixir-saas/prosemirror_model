@@ -76,6 +76,62 @@ defmodule ProsemirrorModel.DocumentTest do
     assert ^expected = data
   end
 
+  describe "empty?/1" do
+    test "returns true for empty document" do
+      document = %TestDocument{type: "doc", content: []}
+
+      assert true == Document.empty?(document)
+    end
+
+    test "returns true for document with only whitespace" do
+      document = %TestDocument{
+        type: "doc",
+        content: [
+          %Node.Heading{
+            attrs: %Node.Heading.Attrs{level: 1},
+            content: [%Node.Text{text: "   "}]
+          },
+          %Node.Paragraph{content: [%Node.Text{text: "   "}]},
+          %Node.Paragraph{content: [%Node.Text{text: "   "}, %Node.Text{text: "   "}]}
+        ]
+      }
+
+      assert true == Document.empty?(document)
+    end
+
+    test "returns false for document with text" do
+      document = %TestDocument{
+        type: "doc",
+        content: [
+          %Node.Heading{
+            attrs: %Node.Heading.Attrs{level: 1},
+            content: [%Node.Text{text: "   "}]
+          },
+          %Node.Paragraph{content: [%Node.Text{text: "txt"}]},
+          %Node.Paragraph{content: [%Node.Text{text: "   "}, %Node.Text{text: "   "}]}
+        ]
+      }
+
+      assert false == Document.empty?(document)
+    end
+
+    test "returns false if document has a no-content block" do
+      document = %TestDocument{
+        type: "doc",
+        content: [
+          %Node.Heading{
+            attrs: %Node.Heading.Attrs{level: 1},
+            content: [%Node.Text{text: "   "}]
+          },
+          %Node.HorizontalRule{},
+          %Node.Paragraph{content: [%Node.Text{text: "   "}, %Node.Text{text: "   "}]}
+        ]
+      }
+
+      assert false == Document.empty?(document)
+    end
+  end
+
   describe "trim/1" do
     test "trims leading and trailing whitespace" do
       document = %TestDocument{

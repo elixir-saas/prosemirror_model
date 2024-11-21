@@ -56,6 +56,15 @@ defmodule ProsemirrorModel.Document do
   ## Helpers
 
   @doc """
+  Returns whether a document is empty, meaning it has only whitespace for text
+  content and contains zero no-content nodes.
+  """
+  def empty?(%{content: []}), do: true
+  def empty?(%{content: content}), do: Enum.all?(content, &empty?/1)
+  def empty?(%ProsemirrorModel.Node.Text{text: text}), do: String.trim(text) == ""
+  def empty?(_struct), do: false
+
+  @doc """
   Trims leading and trailing whitespace from text nodes, only when the first
   or last nodes in the document are of type `ProsemirrorModel.Node.Text`.
   """

@@ -24,12 +24,12 @@ defmodule ProsemirrorModel.Changeset do
          {:ok, parsed_data} <- Jason.decode(data) do
       Map.update(changeset, :params, %{}, &Map.put(&1, "#{field}", parsed_data))
     else
-      {:error, _} ->
+      {:error, _reason} ->
         changeset
         |> Map.put(:valid?, false)
-        |> Ecto.Changeset.add_error(field, "Could not parse data.")
+        |> Ecto.Changeset.add_error(field, "could not parse input")
 
-      _ ->
+      _otherwise ->
         changeset
     end
     |> Ecto.Changeset.cast_embed(field, opts)
@@ -76,5 +76,18 @@ defmodule ProsemirrorModel.Changeset do
     |> Keyword.pop_values(:__parent__)
     |> elem(0)
     |> Enum.map(&{field, &1})
+  end
+
+  @doc """
+  Validates that a prosemirror document has content.
+  """
+  def validate_prosemirror_required(changeset, field) do
+    Ecto.Changeset.validate_change(changeset, field, fn field, value ->
+      if ProsemirrorModel.Document.empty?(value) do
+        [{field, "cannot be blank"}]
+      else
+        []
+      end
+    end)
   end
 end
